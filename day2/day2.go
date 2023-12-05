@@ -10,11 +10,7 @@ import (
 )
 
 func main() {
-	loadedRed := 12
-	loadedGreen := 13
-	loadedBlue := 14
 	sum := 0
-
 	file, err := os.Open("./input.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -23,11 +19,13 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		validGame := true
+		minRed := 0
+		minGreen := 0
+		minBlue := 0
 		line := scanner.Text()
 		split := strings.Split(line, ":")
-		splitID := strings.Split(split[0], " ")
-		id, _ := strconv.Atoi(strings.ReplaceAll(splitID[1], ":", ""))
+		// splitID := strings.Split(split[0], " ")
+		// id, _ := strconv.Atoi(strings.ReplaceAll(splitID[1], ":", ""))
 		splitGames := strings.Split(split[1], ";")
 		for _, game := range splitGames {
 			cubes := strings.Split(game, ",")
@@ -35,26 +33,27 @@ func main() {
 				cube = strings.TrimSpace(cube)
 				count, _ := strconv.Atoi(strings.Split(cube, " ")[0])
 				if strings.Contains(cube, "red") {
-					if count > loadedRed {
-						validGame = false
+					if count > minRed {
+						minRed = count
 					}
 				}
 				if strings.Contains(cube, "green") {
-					if count > loadedGreen {
-						validGame = false
+					if count > minGreen {
+						minGreen = count
 					}
 				}
 				if strings.Contains(cube, "blue") {
-					if count > loadedBlue {
-						validGame = false
+					if count > minBlue {
+						minBlue = count
 					}
 				}
 			}
 		}
-		fmt.Println(id, validGame)
-		if validGame {
-			sum = sum + id
-		}
+		fmt.Println(line)
+		fmt.Println("Red:", minRed, "Green:", minGreen, "Blue:", minBlue)
+		power := minRed * minGreen * minBlue
+		fmt.Println("Power:", power)
+		sum = sum + power
 	}
-	fmt.Println(sum)
+	fmt.Println("Total Power:", sum)
 }
