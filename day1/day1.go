@@ -43,7 +43,7 @@ func main() {
 		line := scanner.Text()
 		first := r.FindString(scanner.Text())
 
-		var i int = len(line) - 1
+		i := len(line) - 1
 		last := ""
 		for last == "" {
 			last = r.FindString(line[i:])
